@@ -66,27 +66,27 @@ class Parsing:
         return text
 
     def print_test(self):
-        print "********"
-        print "wp_id:", self.parse_id
-        print "parse information:\n"
-        print self.parse_info
-        print "wp_text:", self.word_problem_text 
+        print("********")
+        print("wp_id:", self.parse_id)
+        print("parse information:\n")
+        print(self.parse_info)
+        print("wp_text:", self.word_problem_text) 
         for i in range(self.sen_len):
-            print "--sen--sen_id:", self.sentences[i].sen_index
-            print "--sen--parse_id:", self.sentences[i].parse_id 
-            print "--sen--sen_info:\n" 
-            print "--sen--parsetree:", self.sentences[i].parsetree 
-            print "--sen--sen_text:", self.sentences[i].sentence_text 
-            print "--sen--depend..:", self.sentences[i].dependencies 
+            print("--sen--sen_id:", self.sentences[i].sen_index)
+            print("--sen--parse_id:", self.sentences[i].parse_id) 
+            print("--sen--sen_info:\n") 
+            print("--sen--parsetree:", self.sentences[i].parsetree) 
+            print("--sen--sen_text:", self.sentences[i].sentence_text) 
+            print("--sen--depend..:", self.sentences[i].dependencies) 
             for j in range(self.sentences[i].tokens_len):
-                print "----tokens--sen_index:", self.sentences[i].tokens[j].sen_index
-                print "----tokens--word_text::", self.sentences[i].tokens[j].word_text
-                print "----tokens--pos_info:", self.sentences[i].tokens[j].pos_info
-                print "----tokens--lemma:", self.sentences[i].tokens[j].lemma
-                print "----tokens--pos:", self.sentences[i].tokens[j].pos
-                print "----tokens--self.character_offset_begin:", self.sentences[i].tokens[j].character_offset_begin
-        print 
-        print  
+                print("----tokens--sen_index:", self.sentences[i].tokens[j].sen_index)
+                print("----tokens--word_text::", self.sentences[i].tokens[j].word_text)
+                print("----tokens--pos_info:", self.sentences[i].tokens[j].pos_info)
+                print("----tokens--lemma:", self.sentences[i].tokens[j].lemma)
+                print("----tokens--pos:", self.sentences[i].tokens[j].pos)
+                print("----tokens--self.character_offset_begin:", self.sentences[i].tokens[j].character_offset_begin)
+        print() 
+        print()  
 
 
 

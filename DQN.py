@@ -52,7 +52,7 @@ class DQN():
     def create_training_method(self):
         self.action_op_input = tf.placeholder("float",[None,self.action_op_dim]) # one hot presentation
         self.y_op_input = tf.placeholder("float",[None])
-        self.Q_op_action = tf.reduce_sum(tf.mul(self.Q_op_value,self.action_op_input),reduction_indices = 1)
+        self.Q_op_action = tf.reduce_sum(tf.multiply(self.Q_op_value,self.action_op_input),reduction_indices = 1)
         self.op_cost = tf.reduce_mean(tf.square(self.y_op_input - self.Q_op_action))
 
         self.op_optimizer = tf.train.AdamOptimizer(0.0001).minimize(self.op_cost)
@@ -65,7 +65,7 @@ class DQN():
             self.good_buffer[(step,reward)] = (state,one_hot_op_action,reward,next_state,done, step)
         if self.count % 10000 == 0:
             self.count = 0
-            for k,v in self.good_buffer.iteritems():
+            for k,v in list(self.good_buffer.items()):
                 self.replay_buffer.append(v) 
                 if len(self.replay_buffer) > REPLAY_SIZE:
                     self.replay_buffer.popleft()
@@ -131,7 +131,7 @@ class DQN():
             self.action_op_input:action_op_batch,
             self.state_input:state_batch
         })
-        print "operate_loss", self.op_loss
+        print(("operate_loss", self.op_loss))
         self.op_optimizer.run(feed_dict={
             self.y_op_input:y_op_batch,
             self.action_op_input:action_op_batch,
@@ -159,10 +159,10 @@ def main():
         total_reward = 0
         env.set_inner_count_zero()
         #print 'episode', episode
-        for itera in xrange(config.train_num):
+        for itera in range(config.train_num):
             state = env.reset()
-            for step in xrange(STEP):
-                print "--episode:", episode, "iter: ", itera, "step: ", step
+            for step in range(STEP):
+                print(("--episode:", episode, "iter: ", itera, "step: ", step))
                 action_op = dqn.egreedy_action(state)
                 next_state,reward,done = env.step(action_op)
                 total_reward += reward
@@ -178,16 +178,16 @@ def main():
             with open(config.ana_filename, 'a') as f:
                  f.write("test episode: "+str(episode) + '\n')
             right_count = 0
-            for itera in xrange(config.validate_num):
+            for itera in range(config.validate_num):
                 state = env.vali_reset(itera)
-                for step in xrange(STEP):
+                for step in range(STEP):
                     action_op = dqn.action(state)
                     next_state, done,flag,_ = env.val_step(action_op, sys.argv[1])
                     state = next_state
                     if done:
                         right_count += flag
                         break
-                print "test_index:", config.validate_list[itera], "reward", total_reward
+                print(("test_index:", config.validate_list[itera], "reward", total_reward))
             thisacc = right_count*1.0/config.validate_num
             if thisacc > maxacc:
                 maxacc = thisacc
@@ -195,8 +195,8 @@ def main():
             with open("./test/test_info"+"_"+sys.argv[1]+".data", 'a') as f:
                 f.write("episode:{:.0f}, correct operator:{:.0f}, acc:{:.4f},  operator_loss:{:.4f}\n".\
                          format((episode), (right_count), (right_count*1.0/config.validate_num), (dqn.op_loss)))
-            print '++episode: ',episode,'Evaluation Average Accuracy:' , right_count*1.0/config.validate_num
-            print "operate_loss", dqn.op_loss
+            print(('++episode: ',episode,'Evaluation Average Accuracy:' , right_count*1.0/config.validate_num))
+            print(("operate_loss", dqn.op_loss))
 
 if __name__ == '__main__':
     main()  

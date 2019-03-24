@@ -63,7 +63,7 @@ class GoldTree:
     def pre_order(self, root):
         if root == None:
             return
-        print root.value,
+        print(root.value, end=' ')
         self.pre_order(root.left_node)
         self.pre_order(root.right_node)
     
@@ -71,7 +71,7 @@ class GoldTree:
         if root == None:
             return 
         self.mid_order(root.left_node)
-        print root.value,
+        print(root.value, end=' ')
         self.mid_order(root.right_node)
 
     def post_order(self, root):
@@ -79,7 +79,7 @@ class GoldTree:
             return
         self.post_order(root.left_node)
         self.post_order(root.right_node)
-        print root.value,
+        print(root.value, end=' ')
 
     def is_equal(self, v1, v2):
         if self.is_float(v1) == False or self.is_float(v2) == False:

@@ -30,6 +30,6 @@ d.update(l_4)
 
 writeJson("./RL_AI2.json",d )
 
-print len(d)
+print(len(d))
 
                      

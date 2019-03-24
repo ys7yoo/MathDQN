@@ -1998,3 +1998,4 @@ episode:39920, correct operator:68, acc:0.8608,  operator_loss:4.4748
 episode:39940, correct operator:68, acc:0.8608,  operator_loss:0.9237
 episode:39960, correct operator:69, acc:0.8734,  operator_loss:4.6699
 episode:39980, correct operator:68, acc:0.8608,  operator_loss:3.8081
+episode:0, correct operator:31, acc:0.3924,  operator_loss:2574.9392

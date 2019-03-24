@@ -64,7 +64,7 @@ class DQN():
             self.good_buffer[(step,reward)] = (state,one_hot_op_action,reward,next_state,done, step)
         if self.count % 10000 == 0:
             self.count = 0
-            for k,v in self.good_buffer.iteritems():
+            for k,v in self.good_buffer.items():
                 self.replay_buffer.append(v) 
                 if len(self.replay_buffer) > REPLAY_SIZE:
                     self.replay_buffer.popleft()
@@ -130,7 +130,7 @@ class DQN():
             self.action_op_input:action_op_batch,
             self.state_input:state_batch
         })
-        print "operate_loss", self.op_loss
+        print("operate_loss", self.op_loss)
         self.op_optimizer.run(feed_dict={
             self.y_op_input:y_op_batch,
             self.action_op_input:action_op_batch,
@@ -151,9 +151,9 @@ def main():
     saver.restore(dqn.session, latest_checkpoint) 
     right_count = 0
     total_time = 0
-    for itera in xrange(config.validate_num):
+    for itera in range(config.validate_num):
         state = env.vali_reset(itera)
-        for step in xrange(STEP):
+        for step in range(STEP):
              action_op = dqn.action(state)
              next_state,done,flag,etime = env.val_step(action_op, sys.argv[1])
              total_time += etime
@@ -161,11 +161,11 @@ def main():
              if done:
                  right_count += flag
                  if flag == 1:
-                     print '---\t'+str(config.validate_list[itera])
+                     print('---\t'+str(config.validate_list[itera]))
                  break
         #print "test_index:", config.validate_list[itera], "reward", total_reward
-    print "predict time:", total_time 
-    print 'Evaluation Average Accuracy:' , right_count*1.0/config.validate_num
+    print("predict time:", total_time) 
+    print('Evaluation Average Accuracy:' , right_count*1.0/config.validate_num)
 
 if __name__ == '__main__':
     main()  

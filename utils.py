@@ -6,7 +6,7 @@ def readJson(filename):
     return config
 
 def is_quant(token):
-    if u"CD" == token.pos:
+    if "CD" == token.pos:
         return True
     else:
         return False

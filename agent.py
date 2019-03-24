@@ -105,7 +105,7 @@ class State:
         self.nodes = li
 
     def print_state(self):
-        print "state:",
+        print("state:", end=' ')
         s = '['
         for i in range(len(self.nodes)): 
             s += '['
@@ -113,7 +113,7 @@ class State:
                 s += str(self.fix_nodes[ind].value) +', '
             s += '], '
         s+= ']' 
-        print s 
+        print(s) 
 
 class Agent:
     def __init__(self, parse_obj, gold_tree, reject, pick):
@@ -124,8 +124,8 @@ class Agent:
         
 
     def print_agent(self):
-        print "index:", self.parse_obj.parse_id
-        print self.gold_tree.exp_str
+        print("index:", self.parse_obj.parse_id)
+        print(self.gold_tree.exp_str)
 
     def get_feat_from_json_and_pair_index(self, l, index):
         feat_list = {} 
@@ -152,7 +152,7 @@ class Agent:
 
     def get_possible_features(self):
         features = {} 
-        for k, v in self.pair_feat.iteritems():
+        for k, v in self.pair_feat.items():
             temp = {}
             for elem in v:
                 temp[elem] = 1.0 

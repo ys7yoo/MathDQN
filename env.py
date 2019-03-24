@@ -15,7 +15,7 @@ class Env:
 
         features = {}
         for i in range(self.config.wp_total_num):
-            print i
+            print(i)
             p = picks.get(str(i), []) 
             agent = Agent(parse_dict[i], gold_trees[i], self.config.reject[i], p)
             agent.get_feature_from_schema_info()
