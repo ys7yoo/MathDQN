@@ -21,6 +21,6 @@ Now, we only provide code for dataset AI2.(code for other two datasets will be i
 
 ## Dataset
 
-### AI2
+### AI2 (Hosseini et. al., 2014)
 * [Learning to Solve Arithmetic Word Problems with Verb Categorization](https://www.cs.washington.edu/nlp/arithmetic)
 * [code (Java)](https://www.dropbox.com/s/dl/1slbq2fi77fq7wx/Java%20code_mathproblems.zip)
