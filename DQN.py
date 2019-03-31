@@ -143,26 +143,31 @@ def main():
     config = Config()
     config.ana_filename = config.ana_filename + "_" + sys.argv[1]
     config.train_list, config.validate_list = config.seperate_date_set(sys.argv[1])
+
     env = Env(config)
     env.make_env()
+
     dqn = DQN(env)
     #checkpoint_dir = "./model/fold" + sys.argv[1]
     #latest_checkpoint = tf.train.latest_checkpoint(checkpoint_dir)
     #start = int(latest_checkpoint[14:latest_checkpoint.find("_model")])+1
-    maxacc = 0
+
+    max_accuracy = 0
     saver = tf.train.Saver()
     start = 0
     #saver.restore(dqn.session, latest_checkpoint)
     #saver = tf.train.Saver()
     r_l = []
+
     for episode in range(EPISODE)[start:]:
         total_reward = 0
         env.set_inner_count_zero()
         #print 'episode', episode
-        for itera in range(config.train_num):
+
+        for itr in range(config.train_num):
             state = env.reset()
             for step in range(STEP):
-                print(("--episode:", episode, "iter: ", itera, "step: ", step))
+                print(("--episode:", episode, "iter: ", itr, "step: ", step))
                 action_op = dqn.egreedy_action(state)
                 next_state,reward,done = env.step(action_op)
                 total_reward += reward
@@ -171,15 +176,17 @@ def main():
                 if done:
                     break
         r_l.append(total_reward)
+
         with open("./test/reward_list_"+str(sys.argv[1])+".json", 'w') as f:
              json.dump(r_l, f)
+
         if episode % 20 == 0:
             #save_path = saver.save(dqn.session, os.path.join("./model/fold"+str(sys.argv[1]),str(episode)+"_model.ckpt"))
             with open(config.ana_filename, 'a') as f:
                  f.write("test episode: "+str(episode) + '\n')
             right_count = 0
-            for itera in range(config.validate_num):
-                state = env.vali_reset(itera)
+            for itr in range(config.validate_num):
+                state = env.vali_reset(itr)
                 for step in range(STEP):
                     action_op = dqn.action(state)
                     next_state, done,flag,_ = env.val_step(action_op, sys.argv[1])
@@ -187,10 +194,10 @@ def main():
                     if done:
                         right_count += flag
                         break
-                print(("test_index:", config.validate_list[itera], "reward", total_reward))
-            thisacc = right_count*1.0/config.validate_num
-            if thisacc > maxacc:
-                maxacc = thisacc
+                print(("test_index:", config.validate_list[itr], "reward", total_reward))
+            this_accuracy = right_count*1.0/config.validate_num
+            if this_accuracy > max_accuracy:
+                max_accuracy = this_accuracy
                 save_path = saver.save(dqn.session, os.path.join("./model/fold"+str(sys.argv[1]),str(episode)+"_model.ckpt"))
             with open("./test/test_info"+"_"+sys.argv[1]+".data", 'a') as f:
                 f.write("episode:{:.0f}, correct operator:{:.0f}, acc:{:.4f},  operator_loss:{:.4f}\n".\
