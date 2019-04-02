@@ -25,7 +25,7 @@ class Config:
         self.train_list = []
         self.validate_list = []
         self.index_file_name = "ai2index.data"
-        self.ana_filename = "./test/analysis"
+        self.analysis_filename = "./test/analysis"
         self.reject = self.read_reject_json()
         self.picks = self.read_pick('./data/pick2.json')
 

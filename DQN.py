@@ -141,7 +141,7 @@ class DQN():
 
 def main():
     config = Config()
-    config.ana_filename = config.ana_filename + "_" + sys.argv[1]
+    config.analysis_filename = config.analysis_filename + "_" + sys.argv[1]
     config.train_list, config.validate_list = config.seperate_date_set(sys.argv[1])
 
     env = Env(config)
@@ -157,7 +157,7 @@ def main():
     start = 0
     #saver.restore(dqn.session, latest_checkpoint)
     #saver = tf.train.Saver()
-    r_l = []
+    reward_list = []
 
     for episode in range(EPISODE)[start:]:
         total_reward = 0
@@ -175,14 +175,14 @@ def main():
                 state = next_state
                 if done:
                     break
-        r_l.append(total_reward)
+        reward_list.append(total_reward)
 
         with open("./test/reward_list_"+str(sys.argv[1])+".json", 'w') as f:
-             json.dump(r_l, f)
+             json.dump(reward_list, f)
 
         if episode % 20 == 0:
             #save_path = saver.save(dqn.session, os.path.join("./model/fold"+str(sys.argv[1]),str(episode)+"_model.ckpt"))
-            with open(config.ana_filename, 'a') as f:
+            with open(config.analysis_filename, 'a') as f:
                  f.write("test episode: "+str(episode) + '\n')
             right_count = 0
             for itr in range(config.validate_num):
