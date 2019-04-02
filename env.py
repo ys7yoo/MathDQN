@@ -11,20 +11,11 @@ class Env:
         self.agents = []
         self.curr_agent = None
 
-    def get_all_features(self):
-        parse_dict = self.config.parse_dict
-        gold_trees = self.config.gold_trees
-        picks = self.config.picks
+    # functions for making environment
 
-        features = {}
-        for i in range(self.config.wp_total_num):
-            print(i)
-            p = picks.get(str(i), []) 
-            agent = Agent(parse_dict[i], gold_trees[i], self.config.reject[i], p)
-            agent.get_feature_from_schema_info()
-            features.update(agent.get_possible_features())
-            self.agents.append(agent)
-        return features
+    def make_env(self):
+        self.index_to_feature, self.feature_to_index = self.get_index_to_feature_and_feature_to_index()
+        self.train_set, self.validate_set = self.separate_data_set()
 
     def get_index_to_feature_and_feature_to_index(self):
         features = self.get_all_features()
@@ -37,6 +28,21 @@ class Env:
         self.feat_dim = len(index_to_feature)
         return index_to_feature, feature_to_index 
 
+    def get_all_features(self):
+        parse_dict = self.config.parse_dict
+        gold_trees = self.config.gold_trees
+        picks = self.config.picks
+
+        features = {}
+        for i in range(self.config.wp_total_num):
+            print("read word problem {}".format(i))
+            p = picks.get(str(i), [])
+            agent = Agent(parse_dict[i], gold_trees[i], self.config.reject[i], p)
+            agent.get_feature_from_schema_info()
+            features.update(agent.get_possible_features())
+            self.agents.append(agent)
+        return features
+
     def separate_data_set(self):
         train_set = []
         validate_set = []
@@ -46,9 +52,7 @@ class Env:
             validate_set.append(self.agents[ind])
         return train_set, validate_set
 
-    def make_env(self):
-        self.index_to_feature, self.feature_to_index = self.get_index_to_feature_and_feature_to_index()
-        self.train_set, self.validate_set = self.separate_data_set()
+    # other control functions
 
     def reset_inner_count(self):
         self.count = 0
