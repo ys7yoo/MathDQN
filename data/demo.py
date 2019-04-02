@@ -7,7 +7,7 @@ all_features = ["VerbToTheLeft", "VerbToTheRight", "UnitFoundInQuestion", "BestQ
 with open("RelFeat.json", 'r') as f:
     read = json.load(f)
     for elem in read:
-        print("index",elem['index'])
+        print("index", elem['index'])
         print("interest", elem["interest"])
         for feat in all_features:
             if feat in elem['feature']:
