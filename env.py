@@ -5,9 +5,11 @@ import numpy as np
 
 
 class Env:
+
     def __init__(self, config):
         self.config = config
         self.agents = []
+        self.curr_agent = None
 
     def get_all_features(self):
         parse_dict = self.config.parse_dict
