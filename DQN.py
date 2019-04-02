@@ -31,7 +31,7 @@ class DQN():
 
         gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.01)
         self.session = tf.InteractiveSession(config=tf.ConfigProto(gpu_options=gpu_options))
-        self.session.run(tf.initialize_all_variables())
+        self.session.run(tf.global_variables_initializer())
 
     def create_Q_network(self):
         self.state_input = tf.placeholder("float",[None,self.state_dim])
