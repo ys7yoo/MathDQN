@@ -5,7 +5,7 @@ config = Config()
 env = Env(config)
 env.make_env()
 
-env.set_inner_count_zero()
+env.reset_inner_count()
 env.count = 182 
 env.reset()
 env.curr_agent.print_agent()

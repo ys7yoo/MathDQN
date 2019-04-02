@@ -151,8 +151,8 @@ def main():
     saver.restore(dqn.session, latest_checkpoint) 
     right_count = 0
     total_time = 0
-    for itera in range(config.validate_num):
-        state = env.vali_reset(itera)
+    for iteration in range(config.validate_num):
+        state = env.validate_reset(iteration)
         for step in range(STEP):
              action_op = dqn.action(state)
              next_state,done,flag,etime = env.val_step(action_op, sys.argv[1])
@@ -161,7 +161,7 @@ def main():
              if done:
                  right_count += flag
                  if flag == 1:
-                     print('---\t'+str(config.validate_list[itera]))
+                     print('---\t'+str(config.validate_list[iteration]))
                  break
         #print "test_index:", config.validate_list[itera], "reward", total_reward
     print("predict time:", total_time) 

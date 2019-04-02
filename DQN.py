@@ -144,9 +144,11 @@ def main():
     config.analysis_filename = config.analysis_filename + "_" + sys.argv[1]
     config.train_list, config.validate_list = config.seperate_date_set(sys.argv[1])
 
+    print('prepare environment')
     env = Env(config)
     env.make_env()
 
+    print('set up DQN')
     dqn = DQN(env)
     #checkpoint_dir = "./model/fold" + sys.argv[1]
     #latest_checkpoint = tf.train.latest_checkpoint(checkpoint_dir)
@@ -159,9 +161,10 @@ def main():
     #saver = tf.train.Saver()
     reward_list = []
 
+    print('start iterations')
     for episode in range(EPISODE)[start:]:
         total_reward = 0
-        env.set_inner_count_zero()
+        env.reset_inner_count()
         #print 'episode', episode
 
         for itr in range(config.train_num):
@@ -186,7 +189,7 @@ def main():
                  f.write("test episode: "+str(episode) + '\n')
             right_count = 0
             for itr in range(config.validate_num):
-                state = env.vali_reset(itr)
+                state = env.validate_reset(itr)
                 for step in range(STEP):
                     action_op = dqn.action(state)
                     next_state, done,flag,_ = env.val_step(action_op, sys.argv[1])

@@ -1,7 +1,8 @@
-from utils import *
-from config import *
+#from utils import *
+#from config import *
 from agent import *
 import numpy as np
+
 
 class Env:
     def __init__(self, config):
@@ -11,7 +12,7 @@ class Env:
     def get_all_features(self):
         parse_dict = self.config.parse_dict
         gold_trees = self.config.gold_trees
-        picks =  self.config.picks
+        picks = self.config.picks
 
         features = {}
         for i in range(self.config.wp_total_num):
@@ -34,7 +35,7 @@ class Env:
         self.feat_dim = len(index_to_feature)
         return index_to_feature, feature_to_index 
 
-    def seperate_data_set(self):
+    def separate_data_set(self):
         train_set = []
         validate_set = []
         for ind in self.config.train_list:
@@ -45,9 +46,9 @@ class Env:
 
     def make_env(self):
         self.index_to_feature, self.feature_to_index = self.get_index_to_feature_and_feature_to_index()
-        self.train_set, self.validate_set = self.seperate_data_set()
+        self.train_set, self.validate_set = self.separate_data_set()
 
-    def set_inner_count_zero(self):
+    def reset_inner_count(self):
         self.count = 0
 
     def reset(self):
@@ -57,8 +58,8 @@ class Env:
         self.curr_agent.init_state_info(self.index_to_feature)
         return np.array(self.curr_agent.feat_vector)
 
-    def vali_reset(self, itera):
-        self.curr_agent = self.validate_set[itera]
+    def validate_reset(self, iteration):
+        self.curr_agent = self.validate_set[iteration]
         self.curr_agent.init_state_info(self.index_to_feature)
         return np.array(self.curr_agent.feat_vector)
 
