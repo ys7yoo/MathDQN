@@ -17,11 +17,13 @@ BATCH_SIZE = 32 # size of minibatch
 EPISODE = 40000
 STEP = 5
 
+VALIDATE_FREQ = 20  # validation frequency
+
 
 class DQN():
     def __init__(self, env):
         self.replay_buffer = deque()
-        self.good_buffer =  {} 
+        self.good_buffer = {}
         self.epsilon = INITIAL_EPSILON
         self.state_dim = env.feat_dim
         self.action_op_dim = 3
@@ -57,31 +59,31 @@ class DQN():
 
         self.op_optimizer = tf.train.AdamOptimizer(0.0001).minimize(self.op_cost)
 
-    def perceive(self,state, action_op,reward,next_state,done, step):
+    def perceive(self, state, action_op, reward, next_state, done, step):
         self.count += 1
         one_hot_op_action = np.zeros(self.action_op_dim)
         one_hot_op_action[action_op] = 1
-        if reward > 0 :
-            self.good_buffer[(step,reward)] = (state,one_hot_op_action,reward,next_state,done, step)
+        if reward > 0:
+            self.good_buffer[(step, reward)] = (state, one_hot_op_action, reward, next_state, done, step)
         if self.count % 10000 == 0:
             self.count = 0
-            for k,v in list(self.good_buffer.items()):
+            for k, v in list(self.good_buffer.items()):
                 self.replay_buffer.append(v) 
                 if len(self.replay_buffer) > REPLAY_SIZE:
                     self.replay_buffer.popleft()
         else:
-            self.replay_buffer.append((state,one_hot_op_action,reward,next_state,done, step))
+            self.replay_buffer.append((state, one_hot_op_action, reward, next_state, done, step))
             if len(self.replay_buffer) > REPLAY_SIZE:
                 self.replay_buffer.popleft()
         if len(self.replay_buffer) > BATCH_SIZE:
             self.train_Q_network()
 
-    def egreedy_action(self,state):
-        Q_op_value = self.Q_op_value.eval(feed_dict = {
+    def egreedy_action(self, state):
+        Q_op_value = self.Q_op_value.eval(feed_dict={
             self.state_input:np.array([state])
             })[0]
         if random.random() <= self.epsilon:
-            return random.randint(0,self.action_op_dim - 1)
+            return random.randint(0, self.action_op_dim - 1)
         else:
             return np.argmax(Q_op_value)
         if self.epsilon > FINAL_EPSILON:
@@ -89,35 +91,34 @@ class DQN():
         else:
             self.epsilon = FINAL_EPSILON
 
-    def action(self,state):
-        Q_op_value = self.Q_op_value.eval(feed_dict = {
+    def action(self, state):
+        Q_op_value = self.Q_op_value.eval(feed_dict={
             self.state_input:np.array([state])
             })[0]
         return np.argmax(Q_op_value)
 
-    def weight_variable(self,shape):
+    def weight_variable(self, shape):
         initial = tf.truncated_normal(shape)
         return tf.Variable(initial)
 
-    def bias_variable(self,shape):
-        initial = tf.constant(0.01, shape = shape)
+    def bias_variable(self, shape):
+        initial = tf.constant(0.01, shape=shape)
         return tf.Variable(initial)
 
     def train_Q_network(self):
         # Step 1: obtain random minibatch from replay memory
-        minibatch = random.sample(self.replay_buffer,BATCH_SIZE)
-        state_batch = [data[0] for data in minibatch]
-        action_op_batch = [data[1] for data in minibatch]
-        reward_batch = [data[2] for data in minibatch]
-        next_state_batch = [data[3] for data in minibatch]
-
+        mini_batch = random.sample(self.replay_buffer, BATCH_SIZE)
+        state_batch = [data[0] for data in mini_batch]
+        action_op_batch = [data[1] for data in mini_batch]
+        reward_batch = [data[2] for data in mini_batch]
+        next_state_batch = [data[3] for data in mini_batch]
 
         # Step 2: calculate y
         y_op_batch = []
-        Q_op_value_batch = self.Q_op_value.eval(feed_dict={self.state_input:next_state_batch})
+        Q_op_value_batch = self.Q_op_value.eval(feed_dict={self.state_input : next_state_batch})
         #print "Q_value_batch:", Q_value_batch
-        for i in range(0,BATCH_SIZE):
-            done = minibatch[i][4]
+        for i in range(0, BATCH_SIZE):
+            done = mini_batch[i][4]
             if done:
                 y_op_batch.append(reward_batch[i])
             else:
@@ -190,11 +191,12 @@ def main():
         with open("./test/reward_list_"+str(sys.argv[1])+".json", 'w') as f:
             json.dump(reward_list, f)
 
-        if episode % 20 == 0:
+        if episode % VALIDATE_FREQ == 0:
             #save_path = saver.save(dqn.session, os.path.join("./model/fold"+str(sys.argv[1]),str(episode)+"_model.ckpt"))
             with open(config.analysis_filename, 'a') as f:
                 f.write("test episode: "+str(episode) + '\n')
 
+            # validate
             right_count = 0
             for itr in range(config.validate_num):
                 state = env.validate_reset(itr)
@@ -209,8 +211,9 @@ def main():
                         right_count += flag
                         break
                 # print(("test_index:", config.validate_list[itr], "reward", total_reward))
-
             this_accuracy = right_count / config.validate_num
+
+            # save and print validation results
             if this_accuracy > max_accuracy:
                 max_accuracy = this_accuracy
                 save_path = saver.save(dqn.session, os.path.join("./model/fold"+str(sys.argv[1]), str(episode)+"_model.ckpt"))
