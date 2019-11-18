@@ -120,22 +120,23 @@ class DQN():
             done = minibatch[i][4]
             if done:
                 y_op_batch.append(reward_batch[i])
-            else :
+            else:
                 y_op_batch.append(reward_batch[i] + GAMMA * np.max(Q_op_value_batch[i]))
 
         #print y_batch
         #print self.Q_action.eval(feed_dict={self.action_input:action_batch, self.state_input:state_batch})
         #print self.cost.eval(feed_dict = {self.y_input:y_batch, self.action_input:action_batch,self.state_input:state_batch})
         self.op_loss = self.op_cost.eval(feed_dict={
-            self.y_op_input:y_op_batch,
-            self.action_op_input:action_op_batch,
-            self.state_input:state_batch
+            self.y_op_input : y_op_batch,
+            self.action_op_input : action_op_batch,
+            self.state_input : state_batch
         })
-        print(("operate_loss", self.op_loss))
+        # print(("operate_loss", self.op_loss))
+
         self.op_optimizer.run(feed_dict={
-            self.y_op_input:y_op_batch,
-            self.action_op_input:action_op_batch,
-            self.state_input:state_batch
+            self.y_op_input : y_op_batch,
+            self.action_op_input : action_op_batch,
+            self.state_input : state_batch
         })
 
 
@@ -170,43 +171,54 @@ def main():
         for itr in range(config.train_num):
             state = env.reset()
             for step in range(STEP):
-                print(("--episode:", episode, "iter: ", itr, "step: ", step))
+                #print(("--episode:", episode, "iter: ", itr, "step: ", step))
+
                 action_op = dqn.egreedy_action(state)
-                next_state,reward,done = env.step(action_op)
+
+                next_state, reward, done = env.step(action_op)
                 total_reward += reward
+
                 dqn.perceive(state, action_op, reward, next_state, done, config.train_list[env.count-1])
+
                 state = next_state
+
                 if done:
                     break
+
         reward_list.append(total_reward)
 
         with open("./test/reward_list_"+str(sys.argv[1])+".json", 'w') as f:
-             json.dump(reward_list, f)
+            json.dump(reward_list, f)
 
         if episode % 20 == 0:
             #save_path = saver.save(dqn.session, os.path.join("./model/fold"+str(sys.argv[1]),str(episode)+"_model.ckpt"))
             with open(config.analysis_filename, 'a') as f:
-                 f.write("test episode: "+str(episode) + '\n')
+                f.write("test episode: "+str(episode) + '\n')
+
             right_count = 0
             for itr in range(config.validate_num):
                 state = env.validate_reset(itr)
                 for step in range(STEP):
                     action_op = dqn.action(state)
-                    next_state, done,flag,_ = env.val_step(action_op, sys.argv[1])
+
+                    next_state, done, flag, _ = env.val_step(action_op, sys.argv[1])
+
                     state = next_state
+
                     if done:
                         right_count += flag
                         break
-                print(("test_index:", config.validate_list[itr], "reward", total_reward))
-            this_accuracy = right_count*1.0/config.validate_num
+                # print(("test_index:", config.validate_list[itr], "reward", total_reward))
+
+            this_accuracy = right_count / config.validate_num
             if this_accuracy > max_accuracy:
                 max_accuracy = this_accuracy
-                save_path = saver.save(dqn.session, os.path.join("./model/fold"+str(sys.argv[1]),str(episode)+"_model.ckpt"))
+                save_path = saver.save(dqn.session, os.path.join("./model/fold"+str(sys.argv[1]), str(episode)+"_model.ckpt"))
             with open("./test/test_info"+"_"+sys.argv[1]+".data", 'a') as f:
                 f.write("episode:{:.0f}, correct operator:{:.0f}, acc:{:.4f},  operator_loss:{:.4f}\n".\
-                         format((episode), (right_count), (right_count*1.0/config.validate_num), (dqn.op_loss)))
-            print(('++episode: ',episode,'Evaluation Average Accuracy:' , right_count*1.0/config.validate_num))
-            print(("operate_loss", dqn.op_loss))
+                         format((episode), (right_count), (this_accuracy), (dqn.op_loss)))
+            print('[validation] episode {}, accuracy={:.2f}, operator_loss={:.2f}'.format(episode, this_accuracy, dqn.op_loss))
+
 
 if __name__ == '__main__':
     main()  
