@@ -3,6 +3,7 @@
 from agent import *
 import numpy as np
 
+from tqdm import tqdm  # for progressive bar during loading
 
 class Env:
 
@@ -34,8 +35,8 @@ class Env:
         picks = self.config.picks
 
         features = {}
-        for i in range(self.config.wp_total_num):
-            print("read word problem {}".format(i))
+        print("reading word problems...")
+        for i in tqdm(range(self.config.wp_total_num)):
             p = picks.get(str(i), [])
             agent = Agent(parse_dict[i], gold_trees[i], self.config.reject[i], p)
             agent.get_feature_from_schema_info()
