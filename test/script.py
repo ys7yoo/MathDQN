@@ -22,7 +22,7 @@ for i in range(5):
         reward[j] += config[i][j]/5
 
 for elem in reward:
-    print elem
+    print (elem)
 
 with open('reward.json', 'w') as f:
   json.dump(reward, f)

@@ -24,8 +24,8 @@ total_l = t+l
 seg = [0]
 for i in range(5):
     seg.append(int(395*0.2*(i+1)))
-print seg
-print len(total_l)
+print (seg)
+print (len(total_l))
 test_l = []
 train_l = []
 for i in range(5):

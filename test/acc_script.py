@@ -27,7 +27,7 @@ for i in range(len(al)):
 
 
 for elem in al:
-   print elem
+   print (elem)
 
 with open('acc.json', 'w') as f:
   json.dump(al, f)
