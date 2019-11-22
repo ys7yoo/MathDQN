@@ -20,7 +20,7 @@ STEP = 5
 VALIDATE_FREQ = 20  # validation frequency
 
 
-class DQN():
+class DQN:
     def __init__(self, env):
         self.replay_buffer = deque()
         self.good_buffer = {}
@@ -38,18 +38,35 @@ class DQN():
     def create_Q_network(self):
         self.state_input = tf.compat.v1.placeholder("float",[None,self.state_dim])
 
-        W1 = self.weight_variable([self.state_dim,50])
-        b1 = self.bias_variable([50])
+        W1 = self.init_weight_variable([self.state_dim, 50])
+        b1 = self.init_bias_variable([50])
         h_layer_1 = tf.nn.relu(tf.matmul(self.state_input,W1) + b1)
 
-        W2 = self.weight_variable([50, 50])
-        b2 = self.bias_variable([50])
+        W2 = self.init_weight_variable([50, 50])
+        b2 = self.init_bias_variable([50])
         h_layer_2 = tf.nn.relu(tf.matmul(h_layer_1, W2) + b2)
 
-        W_action_op = self.weight_variable([50, self.action_op_dim])
-        b_action_op = self.bias_variable([self.action_op_dim])
+        W_action_op = self.init_weight_variable([50, self.action_op_dim])
+        b_action_op = self.init_bias_variable([self.action_op_dim])
 
         self.Q_op_value = tf.matmul(h_layer_2, W_action_op) + b_action_op
+
+    @staticmethod
+    def init_weight_variable(shape):
+        initial = tf.random.truncated_normal(shape)
+        return tf.Variable(initial)
+
+    @staticmethod
+    def init_bias_variable(shape):
+        initial = tf.constant(0.01, shape=shape)
+        return tf.Variable(initial)
+
+    def create_Q_network_tf2(self):
+        self.model = tf.keras.Sequential([
+            tf.keras.layers.Dense(50, input_shape=self.state_dim, activation='relu'),
+            tf.keras.layers.Dense(50, activation='relu'),
+            tf.keras.layers.Dense(self.action_op_dim)
+        ])
 
     def create_training_method(self):
         self.action_op_input = tf.compat.v1.placeholder("float",[None,self.action_op_dim]) # one hot presentation
@@ -96,14 +113,6 @@ class DQN():
             self.state_input:np.array([state])
             })[0]
         return np.argmax(Q_op_value)
-
-    def weight_variable(self, shape):
-        initial = tf.random.truncated_normal(shape)
-        return tf.Variable(initial)
-
-    def bias_variable(self, shape):
-        initial = tf.constant(0.01, shape=shape)
-        return tf.Variable(initial)
 
     def train_Q_network(self):
         # Step 1: obtain random minibatch from replay memory
