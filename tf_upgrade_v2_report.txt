@@ -1,0 +1,225 @@
+TensorFlow 2.0 Upgrade Script
+-----------------------------
+Converted 19 files
+Detected 3 issues that require attention
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+File: MathDQN/DQN_jinho.py
+--------------------------------------------------------------------------------
+MathDQN/DQN_jinho.py:236:28: WARNING: *.save requires manual check. (This warning is only applicable if the code saves a tf.Keras model) Keras model.save now saves to the Tensorflow SavedModel format by default, instead of HDF5. To continue saving to HDF5, add the argument save_format='h5' to the save() function.
+--------------------------------------------------------------------------------
+File: MathDQN/DQN_v2.py
+--------------------------------------------------------------------------------
+MathDQN/DQN_v2.py:284:28: WARNING: *.save requires manual check. (This warning is only applicable if the code saves a tf.Keras model) Keras model.save now saves to the Tensorflow SavedModel format by default, instead of HDF5. To continue saving to HDF5, add the argument save_format='h5' to the save() function.
+--------------------------------------------------------------------------------
+File: MathDQN/DQN.py
+--------------------------------------------------------------------------------
+MathDQN/DQN.py:219:28: WARNING: *.save requires manual check. (This warning is only applicable if the code saves a tf.Keras model) Keras model.save now saves to the Tensorflow SavedModel format by default, instead of HDF5. To continue saving to HDF5, add the argument save_format='h5' to the save() function.
+================================================================================
+Detailed log follows:
+
+================================================================================
+================================================================================
+Input tree: 'MathDQN'
+================================================================================
+--------------------------------------------------------------------------------
+Processing file 'MathDQN/config.py'
+ outputting to 'MathDQN_tf2/config.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'MathDQN/agent.py'
+ outputting to 'MathDQN_tf2/agent.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'MathDQN/DQN_jinho.py'
+ outputting to 'MathDQN_tf2/DQN_jinho.py'
+--------------------------------------------------------------------------------
+
+31:22: INFO: Renamed 'tf.GPUOptions' to 'tf.compat.v1.GPUOptions'
+32:23: INFO: Renamed 'tf.InteractiveSession' to 'tf.compat.v1.InteractiveSession'
+32:52: INFO: Renamed 'tf.ConfigProto' to 'tf.compat.v1.ConfigProto'
+33:25: INFO: Renamed 'tf.global_variables_initializer' to 'tf.compat.v1.global_variables_initializer'
+36:27: INFO: Renamed 'tf.placeholder' to 'tf.compat.v1.placeholder'
+52:31: INFO: Renamed 'tf.placeholder' to 'tf.compat.v1.placeholder'
+53:26: INFO: Renamed 'tf.placeholder' to 'tf.compat.v1.placeholder'
+54:27: INFO: Added keywords to args of function 'tf.reduce_sum'
+54:27: INFO: Renamed keyword argument for tf.reduce_sum from reduction_indices to axis
+55:23: INFO: Added keywords to args of function 'tf.reduce_mean'
+57:28: INFO: Renamed 'tf.train.AdamOptimizer' to 'tf.compat.v1.train.AdamOptimizer'
+98:18: INFO: Renamed 'tf.truncated_normal' to 'tf.random.truncated_normal'
+165:12: INFO: Renamed 'tf.train.Saver' to 'tf.compat.v1.train.Saver'
+236:28: WARNING: *.save requires manual check. (This warning is only applicable if the code saves a tf.Keras model) Keras model.save now saves to the Tensorflow SavedModel format by default, instead of HDF5. To continue saving to HDF5, add the argument save_format='h5' to the save() function.
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'MathDQN/parse.py'
+ outputting to 'MathDQN_tf2/parse.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'MathDQN/script.py'
+ outputting to 'MathDQN_tf2/script.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'MathDQN/test.py'
+ outputting to 'MathDQN_tf2/test.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'MathDQN/utils.py'
+ outputting to 'MathDQN_tf2/utils.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'MathDQN/env.py'
+ outputting to 'MathDQN_tf2/env.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'MathDQN/gold_tree.py'
+ outputting to 'MathDQN_tf2/gold_tree.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'MathDQN/demo.py'
+ outputting to 'MathDQN_tf2/demo.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'MathDQN/DQN_v2.py'
+ outputting to 'MathDQN_tf2/DQN_v2.py'
+--------------------------------------------------------------------------------
+
+41:22: INFO: Renamed 'tf.GPUOptions' to 'tf.compat.v1.GPUOptions'
+42:23: INFO: Renamed 'tf.InteractiveSession' to 'tf.compat.v1.InteractiveSession'
+42:52: INFO: Renamed 'tf.ConfigProto' to 'tf.compat.v1.ConfigProto'
+43:25: INFO: Renamed 'tf.global_variables_initializer' to 'tf.compat.v1.global_variables_initializer'
+46:27: INFO: Renamed 'tf.placeholder' to 'tf.compat.v1.placeholder'
+62:31: INFO: Renamed 'tf.placeholder' to 'tf.compat.v1.placeholder'
+63:26: INFO: Renamed 'tf.placeholder' to 'tf.compat.v1.placeholder'
+64:27: INFO: Added keywords to args of function 'tf.reduce_sum'
+64:27: INFO: Renamed keyword argument for tf.reduce_sum from reduction_indices to axis
+65:23: INFO: Added keywords to args of function 'tf.reduce_mean'
+67:28: INFO: Renamed 'tf.train.AdamOptimizer' to 'tf.compat.v1.train.AdamOptimizer'
+108:18: INFO: Renamed 'tf.truncated_normal' to 'tf.random.truncated_normal'
+211:12: INFO: Renamed 'tf.train.Saver' to 'tf.compat.v1.train.Saver'
+284:28: WARNING: *.save requires manual check. (This warning is only applicable if the code saves a tf.Keras model) Keras model.save now saves to the Tensorflow SavedModel format by default, instead of HDF5. To continue saving to HDF5, add the argument save_format='h5' to the save() function.
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'MathDQN/predict.py'
+ outputting to 'MathDQN_tf2/predict.py'
+--------------------------------------------------------------------------------
+
+32:23: INFO: Renamed 'tf.InteractiveSession' to 'tf.compat.v1.InteractiveSession'
+33:25: INFO: Renamed 'tf.initialize_all_variables' to 'tf.compat.v1.initialize_all_variables'
+36:27: INFO: Renamed 'tf.placeholder' to 'tf.compat.v1.placeholder'
+52:31: INFO: Renamed 'tf.placeholder' to 'tf.compat.v1.placeholder'
+53:26: INFO: Renamed 'tf.placeholder' to 'tf.compat.v1.placeholder'
+54:27: INFO: Added keywords to args of function 'tf.reduce_sum'
+54:27: INFO: Renamed keyword argument for tf.reduce_sum from reduction_indices to axis
+55:23: INFO: Added keywords to args of function 'tf.reduce_mean'
+57:28: INFO: Renamed 'tf.train.AdamOptimizer' to 'tf.compat.v1.train.AdamOptimizer'
+98:18: INFO: Renamed 'tf.truncated_normal' to 'tf.random.truncated_normal'
+150:12: INFO: Renamed 'tf.train.Saver' to 'tf.compat.v1.train.Saver'
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'MathDQN/DQN.py'
+ outputting to 'MathDQN_tf2/DQN.py'
+--------------------------------------------------------------------------------
+
+34:22: INFO: Renamed 'tf.GPUOptions' to 'tf.compat.v1.GPUOptions'
+35:23: INFO: Renamed 'tf.InteractiveSession' to 'tf.compat.v1.InteractiveSession'
+35:52: INFO: Renamed 'tf.ConfigProto' to 'tf.compat.v1.ConfigProto'
+36:25: INFO: Renamed 'tf.global_variables_initializer' to 'tf.compat.v1.global_variables_initializer'
+39:27: INFO: Renamed 'tf.placeholder' to 'tf.compat.v1.placeholder'
+55:31: INFO: Renamed 'tf.placeholder' to 'tf.compat.v1.placeholder'
+56:26: INFO: Renamed 'tf.placeholder' to 'tf.compat.v1.placeholder'
+57:27: INFO: Added keywords to args of function 'tf.reduce_sum'
+57:27: INFO: Renamed keyword argument for tf.reduce_sum from reduction_indices to axis
+58:23: INFO: Added keywords to args of function 'tf.reduce_mean'
+60:28: INFO: Renamed 'tf.train.AdamOptimizer' to 'tf.compat.v1.train.AdamOptimizer'
+101:18: INFO: Renamed 'tf.truncated_normal' to 'tf.random.truncated_normal'
+160:12: INFO: Renamed 'tf.train.Saver' to 'tf.compat.v1.train.Saver'
+219:28: WARNING: *.save requires manual check. (This warning is only applicable if the code saves a tf.Keras model) Keras model.save now saves to the Tensorflow SavedModel format by default, instead of HDF5. To continue saving to HDF5, add the argument save_format='h5' to the save() function.
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'MathDQN/data/generate_idx.py'
+ outputting to 'MathDQN_tf2/data/generate_idx.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'MathDQN/data/demo.py'
+ outputting to 'MathDQN_tf2/data/demo.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'MathDQN/data/kk.py'
+ outputting to 'MathDQN_tf2/data/kk.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'MathDQN/data/reject.py'
+ outputting to 'MathDQN_tf2/data/reject.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'MathDQN/test/acc_script.py'
+ outputting to 'MathDQN_tf2/test/acc_script.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'MathDQN/test/script.py'
+ outputting to 'MathDQN_tf2/test/script.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+

@@ -31,12 +31,12 @@ class DQN():
         self.create_training_method()
         self.count = 0
 
-        gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.01)
-        self.session = tf.InteractiveSession(config=tf.ConfigProto(gpu_options=gpu_options))
-        self.session.run(tf.global_variables_initializer())
+        gpu_options = tf.compat.v1.GPUOptions(per_process_gpu_memory_fraction=0.01)
+        self.session = tf.compat.v1.InteractiveSession(config=tf.compat.v1.ConfigProto(gpu_options=gpu_options))
+        self.session.run(tf.compat.v1.global_variables_initializer())
 
     def create_Q_network(self):
-        self.state_input = tf.placeholder("float",[None,self.state_dim])
+        self.state_input = tf.compat.v1.placeholder("float",[None,self.state_dim])
 
         W1 = self.weight_variable([self.state_dim,50])
         b1 = self.bias_variable([50])
@@ -52,12 +52,12 @@ class DQN():
         self.Q_op_value = tf.matmul(h_layer_2, W_action_op) + b_action_op
 
     def create_training_method(self):
-        self.action_op_input = tf.placeholder("float",[None,self.action_op_dim]) # one hot presentation
-        self.y_op_input = tf.placeholder("float",[None])
-        self.Q_op_action = tf.reduce_sum(tf.multiply(self.Q_op_value,self.action_op_input),reduction_indices = 1)
-        self.op_cost = tf.reduce_mean(tf.square(self.y_op_input - self.Q_op_action))
+        self.action_op_input = tf.compat.v1.placeholder("float",[None,self.action_op_dim]) # one hot presentation
+        self.y_op_input = tf.compat.v1.placeholder("float",[None])
+        self.Q_op_action = tf.reduce_sum(input_tensor=tf.multiply(self.Q_op_value,self.action_op_input),axis = 1)
+        self.op_cost = tf.reduce_mean(input_tensor=tf.square(self.y_op_input - self.Q_op_action))
 
-        self.op_optimizer = tf.train.AdamOptimizer(0.0001).minimize(self.op_cost)
+        self.op_optimizer = tf.compat.v1.train.AdamOptimizer(0.0001).minimize(self.op_cost)
 
     def perceive(self, state, action_op, reward, next_state, done, step):
         self.count += 1
@@ -98,7 +98,7 @@ class DQN():
         return np.argmax(Q_op_value)
 
     def weight_variable(self, shape):
-        initial = tf.truncated_normal(shape)
+        initial = tf.random.truncated_normal(shape)
         return tf.Variable(initial)
 
     def bias_variable(self, shape):
@@ -157,7 +157,7 @@ def main():
     #start = int(latest_checkpoint[14:latest_checkpoint.find("_model")])+1
 
     max_accuracy = 0
-    saver = tf.train.Saver()
+    saver = tf.compat.v1.train.Saver()
     start = 0
     #saver.restore(dqn.session, latest_checkpoint)
     #saver = tf.train.Saver()

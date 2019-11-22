@@ -29,11 +29,11 @@ class DQN():
         self.create_training_method()
         self.count = 0
 
-        self.session = tf.InteractiveSession()
-        self.session.run(tf.initialize_all_variables())
+        self.session = tf.compat.v1.InteractiveSession()
+        self.session.run(tf.compat.v1.initialize_all_variables())
 
     def create_Q_network(self):
-        self.state_input = tf.placeholder("float",[None,self.state_dim])
+        self.state_input = tf.compat.v1.placeholder("float",[None,self.state_dim])
 
         W1 = self.weight_variable([self.state_dim,50])
         b1 = self.bias_variable([50])
@@ -49,12 +49,12 @@ class DQN():
         self.Q_op_value = tf.matmul(h_layer_2, W_action_op) + b_action_op
 
     def create_training_method(self):
-        self.action_op_input = tf.placeholder("float",[None,self.action_op_dim]) # one hot presentation
-        self.y_op_input = tf.placeholder("float",[None])
-        self.Q_op_action = tf.reduce_sum(tf.mul(self.Q_op_value,self.action_op_input),reduction_indices = 1)
-        self.op_cost = tf.reduce_mean(tf.square(self.y_op_input - self.Q_op_action))
+        self.action_op_input = tf.compat.v1.placeholder("float",[None,self.action_op_dim]) # one hot presentation
+        self.y_op_input = tf.compat.v1.placeholder("float",[None])
+        self.Q_op_action = tf.reduce_sum(input_tensor=tf.mul(self.Q_op_value,self.action_op_input),axis = 1)
+        self.op_cost = tf.reduce_mean(input_tensor=tf.square(self.y_op_input - self.Q_op_action))
 
-        self.op_optimizer = tf.train.AdamOptimizer(0.0001).minimize(self.op_cost)
+        self.op_optimizer = tf.compat.v1.train.AdamOptimizer(0.0001).minimize(self.op_cost)
 
     def perceive(self,state, action_op,reward,next_state,done, step):
         self.count += 1
@@ -95,7 +95,7 @@ class DQN():
         return np.argmax(Q_op_value)
 
     def weight_variable(self,shape):
-        initial = tf.truncated_normal(shape)
+        initial = tf.random.truncated_normal(shape)
         return tf.Variable(initial)
 
     def bias_variable(self,shape):
@@ -147,7 +147,7 @@ def main():
     dqn = DQN(env)
     checkpoint_dir = "./model/fold" + sys.argv[1]
     latest_checkpoint = tf.train.latest_checkpoint(checkpoint_dir)
-    saver = tf.train.Saver()
+    saver = tf.compat.v1.train.Saver()
     saver.restore(dqn.session, latest_checkpoint) 
     right_count = 0
     total_time = 0
