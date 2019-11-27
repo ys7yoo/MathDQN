@@ -177,7 +177,8 @@ class Agent:
         #    self.features[str(1)+'_'+elem] = 1.0
         #for elem in curr_rel_feat_2:
         #    self.features[str(2)+'_'+elem] = 1.0
-        self.feat_vector = [1 if elem in self.features else 0 for index, elem in enumerate(index_to_feat)]    
+        self.feat_vector = [1 if elem in self.features else 0 for index, elem in enumerate(index_to_feat)]
+        self.feat_vector = np.array(self.feat_vector)
         return self.feat_vector
 
     def select_tuple(self):
